@@ -602,6 +602,9 @@ var publicMethods = {
 		if(_options.showHideOpacity) {
 			rootClasses += 'pswp--animate_opacity ';
 		}
+		if(_options.modal === false) {
+			rootClasses += 'pswp--non_modal ';
+		}
 		rootClasses += _likelyTouchDevice ? 'pswp--touch' : 'pswp--notouch';
 		rootClasses += _features.animationName ? ' pswp--css_animation' : '';
 		rootClasses += _features.svg ? ' pswp--svg' : '';

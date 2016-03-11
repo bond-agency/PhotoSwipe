@@ -409,7 +409,14 @@ var _gestureStartTime,
 	// Pointermove/touchmove/mousemove handler
 	_onDragMove = function(e) {
 
-		e.preventDefault();
+		/* QUICKFIX:
+		Prevent touchMove event only on when gallery is in modal mode (fullscreen).
+		For modal (inline), allow the event because it may be vertical scrolling.
+		Works in tandem with commented-out "touch-action: none" in photoswipe.css.
+		*/
+		if(_options.modal) {
+		  e.preventDefault();
+		}
 
 		if(_pointerEventEnabled) {
 			var pointerIndex = framework.arraySearch(_currPointers, e.pointerId, 'id');
@@ -436,6 +443,10 @@ var _gestureStartTime,
 					}
 				}
 				
+				//QUICKFIX: prevent touchMove event when direction is horizontal so vertical scrolling won't interfeer.
+				if (_direction == 'h') {
+				  e.preventDefault();
+				}
 			} else {
 				_currentPoints = touchesList;
 			}
