@@ -428,7 +428,7 @@ var _gestureStartTime,
 		}
 
 		if(_isDragging) {
-			console.log('Current zoom level:', _currZoomLevel);
+
 			var touchesList = _getTouchPoints(e);
 			if(!_direction && !_moved && !_isZooming) {
 
@@ -448,6 +448,13 @@ var _gestureStartTime,
 				if (_direction == 'h') {
 				  e.preventDefault();
 				}
+
+				// prevent touchMove event when in zoom mode.
+				var isZoomed = _startZoomLevel != _currZoomLevel;
+				if( isZoomed ) {
+					e.preventDefault();
+				
+			}
 			} else {
 				_currentPoints = touchesList;
 			}
