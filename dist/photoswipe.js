@@ -1,4 +1,4 @@
-/*! PhotoSwipe - v4.1.1 - 2016-03-11
+/*! PhotoSwipe - v4.1.1 - 2016-12-05
 * http://photoswipe.com
 * Copyright (c) 2016 Dmitry Semenov; */
 (function (root, factory) { 
@@ -1761,6 +1761,7 @@ var _gestureStartTime,
 		}
 
 		if(_isDragging) {
+			console.log('Current zoom level:', _currZoomLevel);
 			var touchesList = _getTouchPoints(e);
 			if(!_direction && !_moved && !_isZooming) {
 
