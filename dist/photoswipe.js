@@ -1751,8 +1751,8 @@ var _gestureStartTime,
 		  e.preventDefault();
 		}
 
-		// prevent touchMove event when in zoom mode.
-		if( _currZoomLevel == 1 ) {
+		// Prevent the default behavour if multitouching.
+		if(_isMultitouch) {
 			e.preventDefault();
 		}
 
@@ -1766,6 +1766,11 @@ var _gestureStartTime,
 		}
 
 		if(_isDragging) {
+
+			// prevent touchMove event when in zoom mode.
+			if( _currZoomLevel > _startZoomLevel ) {
+				e.preventDefault();
+			}
 
 			var touchesList = _getTouchPoints(e);
 			if(!_direction && !_moved && !_isZooming) {
