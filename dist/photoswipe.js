@@ -1751,6 +1751,11 @@ var _gestureStartTime,
 		  e.preventDefault();
 		}
 
+		// prevent touchMove event when in zoom mode.
+		if( _currZoomLevel == 1 ) {
+			e.preventDefault();
+		}
+
 		if(_pointerEventEnabled) {
 			var pointerIndex = framework.arraySearch(_currPointers, e.pointerId, 'id');
 			if(pointerIndex > -1) {
@@ -1781,13 +1786,6 @@ var _gestureStartTime,
 				if (_direction == 'h') {
 				  e.preventDefault();
 				}
-
-				// prevent touchMove event when in zoom mode.
-				var isZoomed = _startZoomLevel != _currZoomLevel;
-				if( isZoomed ) {
-					e.preventDefault();
-				
-			}
 			} else {
 				_currentPoints = touchesList;
 			}
