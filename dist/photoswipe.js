@@ -1,6 +1,6 @@
-/*! PhotoSwipe - v4.1.1 - 2015-12-24
+/*! PhotoSwipe - v4.1.1 - 2016-12-05
 * http://photoswipe.com
-* Copyright (c) 2015 Dmitry Semenov; */
+* Copyright (c) 2016 Dmitry Semenov; */
 (function (root, factory) { 
 	if (typeof define === 'function' && define.amd) {
 		define(factory);
@@ -900,6 +900,9 @@ var publicMethods = {
 		if(_options.showHideOpacity) {
 			rootClasses += 'pswp--animate_opacity ';
 		}
+		if(_options.modal === false) {
+			rootClasses += 'pswp--non_modal ';
+		}
 		rootClasses += _likelyTouchDevice ? 'pswp--touch' : 'pswp--notouch';
 		rootClasses += _features.animationName ? ' pswp--css_animation' : '';
 		rootClasses += _features.svg ? ' pswp--svg' : '';
@@ -1739,7 +1742,19 @@ var _gestureStartTime,
 	// Pointermove/touchmove/mousemove handler
 	_onDragMove = function(e) {
 
-		e.preventDefault();
+		/* QUICKFIX:
+		Prevent touchMove event only on when gallery is in modal mode (fullscreen).
+		For modal (inline), allow the event because it may be vertical scrolling.
+		Works in tandem with commented-out "touch-action: none" in photoswipe.css.
+		*/
+		if(_options.modal) {
+		  e.preventDefault();
+		}
+
+		// Prevent the default behavour if multitouching.
+		if(_isMultitouch) {
+			e.preventDefault();
+		}
 
 		if(_pointerEventEnabled) {
 			var pointerIndex = framework.arraySearch(_currPointers, e.pointerId, 'id');
@@ -1751,6 +1766,12 @@ var _gestureStartTime,
 		}
 
 		if(_isDragging) {
+
+			// prevent touchMove event when in zoom mode.
+			if( _currZoomLevel > _startZoomLevel ) {
+				e.preventDefault();
+			}
+
 			var touchesList = _getTouchPoints(e);
 			if(!_direction && !_moved && !_isZooming) {
 
@@ -1766,6 +1787,10 @@ var _gestureStartTime,
 					}
 				}
 				
+				//QUICKFIX: prevent touchMove event when direction is horizontal so vertical scrolling won't interfeer.
+				if (_direction == 'h') {
+				  e.preventDefault();
+				}
 			} else {
 				_currentPoints = touchesList;
 			}

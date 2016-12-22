@@ -71,6 +71,13 @@
 	cursor: grabbing;
 }
 
+.pswp--non_modal,
+.pswp--non_modal .pswp__container,
+.pswp--non_modal .pswp__zoom-wrap {
+  -ms-touch-action: auto;
+  touch-action: auto;
+}
+
 /*
 	Background is added as a separate element.
 	As animating opacity is much faster than animating rgba() background-color.
